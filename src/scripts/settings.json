@@ -1,0 +1,46 @@
+{
+    "token": "1253833516:AAGufwKD7soH-TzEzp_9ai1TCkPdAEE6OCA",
+    "url": "http://engmanager.ru/",
+    "log_file": "bot.log",
+    "admins": {
+        "363543404": [
+            "shlom41k",
+            "Sergey",
+            "Shloma"
+        ],
+        "183458667": [
+            "Naushnick",
+            "Vasiliy",
+            "Krasavtsev"
+        ]
+    },
+    "users_authorized": {
+        "chat_id": [
+            "username",
+            "firstname",
+            "lastname"
+        ],
+        "363543404": [
+            "shlom41k",
+            "Sergey",
+            "Shloma"
+        ],
+        "183458667": [
+            "Naushnick",
+            "Vasiliy",
+            "Krasavtsev"
+        ],
+        "628705747": [
+            "Randyjkee",
+            "Vitaly",
+            "Avin"
+        ]
+    },
+    "users_unauthorized": {
+        "chat_id": [
+            "username",
+            "firstname",
+            "lastname"
+        ]
+    }
+}
