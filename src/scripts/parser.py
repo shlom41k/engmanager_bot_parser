@@ -29,9 +29,6 @@ def get_tables(html, some_liga=None):
 
     ligas = soup.find_all("li", class_="match-accordion-item")
 
-    # print(ligas[0])
-    # print(ligas[0].find("h3").text)
-
     all_stat = {}
 
     for liga in ligas:
@@ -59,7 +56,6 @@ def get_tables(html, some_liga=None):
 
                 # print(command1, result, command2, f"link: {link}")
                 games[f"{command1} <a href='{link}'>{result}</a> {command2}"] = link
-                # f"<a href='{link}'>{result}</a>"
 
             except:
                 # print("Err read")
@@ -96,12 +92,5 @@ if __name__ == "__main__":
     # print(page)
 
     soup = BeautifulSoup(page, "lxml")
-    # ligas = soup.find("div", id="content-center")
-    # ligas = soup.find("div", class_="MatchRows_root__1NKae")
     ligas = soup.find_all("div")
     print(ligas)
-
-
-    #
-    # first_match = ligas.find("a", class_="Link_customLink__PE-kK")
-    # print(first_match)

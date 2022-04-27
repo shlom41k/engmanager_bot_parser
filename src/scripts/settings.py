@@ -7,8 +7,12 @@ import json
 
 # bot settings
 SETTINGS_JSON = "settings.json"
+
+
+# Shlom41k is superuser. Insert your own chatID here.
 SHLOM41k = 363543404
 
+# settings format from settings.json is:
 """
 settings_format = {
     "token": "token",
@@ -56,11 +60,4 @@ def update_settings(**kwargs) -> dict:
 
 if __name__ == "__main__":
     pass
-
-    # token, users_authorized, users_unauthorized = get_settings(load_settings(SETTINGS_JSON))
-
-    # users_authorized[183458667] = ["Naushnick", "Vasiliy", "Krasavtsev"]
-    # d = update_settings(token=token, users_authorized=users_authorized, users_unauthorized=users_unauthorized)
-    # print(d)
-
 

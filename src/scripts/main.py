@@ -17,8 +17,6 @@ from logger import Logger
 # Load settings and data
 PRESETS = load_settings(SETTINGS_JSON)
 token, url, log_file, admins, white_users, black_users = get_settings(PRESETS)
-# print(PRESETS)
-# print(black_users)
 bl = black_users
 
 # Create logger
@@ -33,14 +31,23 @@ keyboard1.row('/all_stat', '/ligas')
 
 
 def is_main_admin(user_id: int) -> bool:
+    """
+    Check if user is main admin
+    """
     return True if user_id == SHLOM41k else False
 
 
 def is_user_admin(user_id: int) -> bool:
+    """
+    Check if user is admin
+    """
     return True if str(user_id) in admins.keys() else False
 
 
 def is_user_allowed(foo):
+    """
+    Check if user is allowed to use bot
+    """
     def wrapper(message):
 
         user_id = message.from_user.id
@@ -49,6 +56,7 @@ def is_user_allowed(foo):
         # print(f"{datetime.now()}: USER REQUEST <- [{username}] {firstname} {lastname}: '{message.text}'")
         log.add(f"{datetime.now()}: USER REQUEST <- [{username}] {firstname} {lastname}: '{message.text}'")
 
+        # Check if user is allowed to use bot
         if str(user_id) in white_users.keys():
             foo(message)
             # print(f"{datetime.now()}: BOT RESPONSE -> [{username}] {firstname} {lastname}")
@@ -65,6 +73,9 @@ def is_user_allowed(foo):
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
+    """
+    Start message
+    """
     # print(f"{datetime.now()}: USER REQUEST <- [{message.from_user.username}] {message.from_user.first_name} {message.from_user.last_name}: '{message.text}'")
     log.add(f"{datetime.now()}: USER REQUEST <- [{message.from_user.username}] {message.from_user.first_name} {message.from_user.last_name}: '{message.text}'")
 
@@ -77,6 +88,9 @@ def start_message(message):
 @bot.message_handler(commands=['all_stat'])
 @is_user_allowed
 def command_all_stat(message):
+    """
+    All stat command
+    """
     ans = bot.send_message(message.chat.id, f"Request is in progress...")
     log.add(f"{datetime.now()}: INFO: Request to -> '{url}'")
 
@@ -109,6 +123,9 @@ def command_all_stat(message):
 @bot.message_handler(commands=['ligas'])
 @is_user_allowed
 def command_ligas(message):
+    """
+    Ligas command
+    """
     log.add(f"{datetime.now()}: INFO: Response from <- '{url}'")
 
     try:
@@ -127,6 +144,9 @@ def command_ligas(message):
 @bot.message_handler(commands=COMMANDS[:-1])
 @is_user_allowed
 def command_commands(message):
+    """
+    Commands
+    """
 
     for liga_name, description in FLAGS.items():
         if description[0] in message.text:
@@ -157,6 +177,9 @@ def command_commands(message):
 @bot.message_handler(commands=['blacklist'])
 @is_user_allowed
 def command_blacklist(message):
+    """
+    Blacklist command
+    """
     if is_user_admin(message.from_user.id):
         # print(black_users)
         ans = bot.send_message(message.chat.id, "\n".join([f"{key}: {value}" for key, value in black_users.items()]))
@@ -165,6 +188,9 @@ def command_blacklist(message):
 @bot.message_handler(commands=['whitelist'])
 @is_user_allowed
 def command_whitelist(message):
+    """
+    Whitelist command
+    """
     if is_user_admin(message.from_user.id):
         # print(black_users)
         ans = bot.send_message(message.chat.id, "\n".join([f"{key}: {value}" for key, value in white_users.items()]))
@@ -173,6 +199,9 @@ def command_whitelist(message):
 @bot.message_handler(commands=['admins'])
 @is_user_allowed
 def command_admins(message):
+    """
+    Admins command
+    """
     if is_user_admin(message.from_user.id):
         # print(black_users)
         ans = bot.send_message(message.chat.id, b"\xF0\x9F\x91\xA4".decode() + " Administrators:\n" + "\n".join([f"{key}: {value}" for key, value in admins.items()]))
@@ -185,22 +214,18 @@ def command_test(message):
 
     if message.text == "Hi":
         bot.send_message(message.from_user.id, "Hello! I am StasyanBot!", parse_mode="html")
-        # bot.send_message(message.from_user.id, "<a href='http://engmanager.ru/web/manager/match/view/?id=15447'>Прямая связь</a>", parse_mode="html")
 
     elif message.text.startswith("/adduser"):
+        # Adding some user to whitelist
         if is_user_admin(message.from_user.id):
             try:
                 _, user_id = message.text.split()
-                # print(bl)
 
                 user_data = black_users.pop(user_id, None)
-                # user_data = black_users.pop(user_id, None)
-                # user_data = black_users.get(user_id, None)
 
                 if user_data is None:
                     bot.send_message(message.from_user.id, "ERROR! Unknown user!")
                 else:
-                    # print(user_data)
                     white_users[user_id] = user_data
                     save_settings(PRESETS, SETTINGS_JSON)
                     bot.send_message(message.from_user.id, f"User id={user_id}: {user_data} added to whitelist")
@@ -215,6 +240,7 @@ def command_test(message):
                     f"{message.from_user.first_name} {message.from_user.last_name}' try '{message.text}'")
 
     elif message.text.startswith("/addadmin"):
+        # Adding some user to admins
         if is_main_admin(message.from_user.id):
             try:
                 _, user_id = message.text.split()
@@ -223,7 +249,6 @@ def command_test(message):
                 if user_data is None:
                     bot.send_message(message.from_user.id, "ERROR! Unknown user!")
                 else:
-                    # print(user_data)
                     admins[user_id] = user_data
                     save_settings(PRESETS, SETTINGS_JSON)
                     bot.send_message(message.from_user.id, f"User id={user_id}: {user_data} added to administrators")
@@ -238,6 +263,7 @@ def command_test(message):
                     f"{message.from_user.first_name} {message.from_user.last_name}' try '{message.text}'")
 
     elif message.text == "/clear blacklist":
+        # Clear blacklist
         black_users.clear()
         black_users["chat_id"] = ["username", "firstname", "lastname"]
         save_settings(PRESETS, SETTINGS_JSON)
@@ -255,6 +281,9 @@ def handle_document_audio(message):
 @bot.message_handler(content_types=['sticker'])
 @is_user_allowed
 def sticker_id(message):
+    """
+    Sticker command
+    """
     ans = bot.send_sticker(message.chat.id, random.choice(STIC_PRESS_F))
 
 

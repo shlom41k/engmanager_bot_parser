@@ -1,5 +1,5 @@
 {
-    "token": "1253833516:AAGufwKD7soH-TzEzp_9ai1TCkPdAEE6OCA",
+    "token": "",
     "url": "http://engmanager.ru/",
     "log_file": "bot.log",
     "admins": {
@@ -30,11 +30,6 @@
             "Vasiliy",
             "Krasavtsev"
         ],
-        "628705747": [
-            "Randyjkee",
-            "Vitaly",
-            "Avin"
-        ]
     },
     "users_unauthorized": {
         "chat_id": [
